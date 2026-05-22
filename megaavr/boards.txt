@@ -1721,6 +1721,7 @@ avrdu.build.attachmode=-DCORE_ATTACH_ALL
 #________________________________________#
 avrdu.bootloader.tool=avrdude
 avrdu.bootloader.WDTCFG=0b{bootloader.wdtwindowbits}{bootloader.wdttimeoutbits}
+avrdu.bootloader.OSCCFG=0b00000000
 avrdu.bootloader.wdtwindowbits=0000
 avrdu.bootloader.wdttimeotbits=0000
 avrdu.bootloader.BODCFG=0b{bootloader.bodlevbits}{bootloader.bodmodebits}
