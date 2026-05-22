@@ -29,8 +29,8 @@ jtag2updi.program.speed=115200
 
 nedbg.name=Microchip Curiosity Nano (nEDBG/ATSAMD21 debug chip)
 nedbg.communication=usb
-nedbg.protocol=curiosity_updi
-nedbg.program.protocol=curiosity_updi
+nedbg.protocol=pkobn_updi
+nedbg.program.protocol=pkobn_updi
 nedbg.program.tool=avrdude
 nedbg.program.extra_params=-Pusb
 
