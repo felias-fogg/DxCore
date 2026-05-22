@@ -1,4 +1,11 @@
 # DxCore - Arduino support for the AVR DA, DB, and DD-series
+
+------
+
+**This is a fork of DxCore supporting debugging in the Arduino IDE 2 (and elsewhere) by means of [PyAvrOCD](https://pyavrocd.io).**
+
+------
+
 Use the Table of Contents button! Why was I making a ToC manually? (especially since I apparently did it wrong..)
 
 
