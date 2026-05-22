@@ -49,7 +49,7 @@ compiler.c.elf.flags={compiler.warning_flags}  {compiler.optimization_flags} -fl
 compiler.c.elf.cmd=avr-gcc
 compiler.S.flags=-c  {compiler.optimization_flags} -x assembler-with-cpp -flto -MMD
 compiler.cpp.cmd=avr-g++
-compiler.cpp.flags=-c  {compiler.optimization_flags} {compiler.optimization_flags} {compiler.warning_flags} -std=gnu++17 -ffunction-sections -fdata-sections -fshort-enums -flto -MMD -fpermissive -Wno-sized-deallocation -fno-exceptions -fno-threadsafe-statics -Wno-error=narrowing
+compiler.cpp.flags=-c {compiler.optimization_flags} {compiler.warning_flags} -std=gnu++17 -ffunction-sections -fdata-sections -fshort-enums -flto -MMD -fpermissive -Wno-sized-deallocation -fno-exceptions -fno-threadsafe-statics -Wno-error=narrowing
 compiler.ar.cmd=avr-gcc-ar
 compiler.ar.flags=rcs
 compiler.objcopy.cmd=avr-objcopy
