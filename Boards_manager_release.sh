@@ -24,7 +24,7 @@ echo "PAOVERSION: ${PAOVERSION}"
 
 AVROCDVERSION=${PAOVERSION#"v"}
 
-AVRDUDE_VERSION="6.3.0-arduino17or18"
+AVRDUDE_VERSION="avrdude_v8.1-released"
 
 # Get the download URL for the latest release from Github
 DOWNLOAD_URL=$(curl -s https://api.github.com/repos/$REPOWNER/$REPOSITORY/releases/latest | grep "tarball_url" | awk -F\" '{print $4}')
