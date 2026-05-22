@@ -54,6 +54,52 @@
               "name": "python3"
             }
           ]
+        },
+        {
+          "name": "DxCore (Debug enabled)",
+          "architecture": "megaavr",
+          "version": "1.7.0-pre1",
+          "category": "Contributed",
+          "url": "https://felias-fogg.github.io/DxCore/DxCore-1.7.0-pre1.tar.bz2",
+          "archiveFileName": "DxCore-1.7.0-pre1.tar.bz2",
+          "checksum": "SHA-256:b2dfa893190809cc0d2b0fdcd375dda76e3ce153b951f7a21a77f6bbd542258d",
+          "size": "53654008",
+          "boards": [
+            {
+              "name": "<b>DxCore</b>: For all modern non-tinyAVR AVR devices: All AVRxxDAyy, AVRxxDByy, AVRxxDDyy, and now AVRxxDUyy (no USB support yet), AVRxxEAyy (now with uploads and burn bootloader fixed) as well as the AVR, and now the Ex-series p AVRxxEByy and AVRxxDUyy. <br/>These parts are available in flash sizes as small as 16k or as large as 128k, 1k to 16k of RAM, and run at up to 24 (Dx) or up to 20 (Ex) MHz. Each family is available in 2 or 3 flash sizes, and each combination of flash size and featureset is usually available on three or four different pincounts ."
+            },
+            {
+              "name": "<b>Supported:</b> AVR128DA28/32/48/64, AVR128DB28/32/48/64, AVR64DA28/32/48/64, AVR64DB28/32/48/64, AVR64DD14/20/28/32, AVR64DU28/32<br/>AVR32DA28/32/48, AVR32DB28/32/48,  AVR32DD14/20/28/32, AVR16DD14/20/28/32<br/>AVR64EA28/32/48, AVR32EA28/32/48, AVR16EA28/32/48"
+            },
+            {
+              "name": "<b>Release Notes:</b> 1.6.2 - Add avrdude 8.1 for non-serialupdi uploads, many critical fixes. Should be a lot closer.  1.6.1 - 1.6.0 omitted the new toolchain, and none of the new parts worked as a result. This should correct that. 1.6.0 - Experimental release so that automated testing can be run with new toolchain. Further information will be posted on github when more information about release plans is available. "
+            },
+            {
+              "name": "<b>Supported UPDI programmers:</b> SerialUPDI (serial adapter w/diode or resistor), jtag2updi, nEDBG, mEDBG, EDBG, SNAP, Atmel-ICE and PICkit4 - or use one of those to <br/>load Optiboot (included) for serial programming if you determine that it is appropriate for your application. <br/>SerialUPDI may not be functionally spectacular, but it supports the latest parts released, and it is fast as all hell, and the adapters cost practically nothing."
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "DxCore",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-azduino7b1"
+            },
+            {
+              "packager": "DxCore",
+              "name": "avrdude",
+              "version": "6.3.0-arduino17or18"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            },
+            {
+              "packager": "DxCore",
+              "name": "avrocd-tools",
+              "version": "1.4.0a1"
+            }
+          ]
         }
       ],
       "tools": [
@@ -643,6 +689,68 @@
               "host": "i686-w64-mingw32",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8a-i686-w64-mingw32.tar.bz2",
               "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8a-i686-w64-mingw32.tar.bz2"
+            }
+          ]
+        },
+        {
+          "name": "avrocd-tools",
+          "version": "1.4.0a1",
+          "systems": [
+            {
+              "size": "1065",
+              "checksum": "SHA-256:94b83824b09e1e1fbf03f835e835361890d0f8d6146e8164ea9331e2a36f04bc",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avrocd-tools-1.4.0a1-arm-linux-gnueabihf.tar.gz",
+              "url": "https://github.com/felias-fogg/PyAvrOCD/releases/download/v1.4.0a1/avrocd-tools-1.4.0a1-arm-linux-gnueabihf.tar.gz"
+            },
+            {
+              "size": "41745827",
+              "checksum": "SHA-256:d55900f076bde121e633e54c77a8e7fb8609a190ee4f719fe239d09eeef34a0a",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "avrocd-tools-1.4.0a1-aarch64-linux-gnu.tar.gz",
+              "url": "https://github.com/felias-fogg/PyAvrOCD/releases/download/v1.4.0a1/avrocd-tools-1.4.0a1-aarch64-linux-gnu.tar.gz"
+            },
+            {
+              "size": "31155937",
+              "checksum": "SHA-256:2192be702d0ef59a3d462b605005ecd0802a4d4a4c8e73fd2bfefbc465eac40a",
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "avrocd-tools-1.4.0a1-x86_64-apple-darwin.tar.gz",
+              "url": "https://github.com/felias-fogg/PyAvrOCD/releases/download/v1.4.0a1/avrocd-tools-1.4.0a1-x86_64-apple-darwin.tar.gz"
+            },
+            {
+              "size": "42231737",
+              "checksum": "SHA-256:3c584f9550ddaf8839c3e38a5951b5dea6f1c4fbaf1d0f1649fed8905acb44d1",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "avrocd-tools-1.4.0a1-x86_64-linux-gnu.tar.gz",
+              "url": "https://github.com/felias-fogg/PyAvrOCD/releases/download/v1.4.0a1/avrocd-tools-1.4.0a1-x86_64-linux-gnu.tar.gz"
+            },
+            {
+              "size": "1070",
+              "checksum": "SHA-256:59c81648e656239186538e66ed73a12f59bedb046312989630fe05d9444527ab",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "avrocd-tools-1.4.0a1-i686-linux-gnu.tar.gz",
+              "url": "https://github.com/felias-fogg/PyAvrOCD/releases/download/v1.4.0a1/avrocd-tools-1.4.0a1-i686-linux-gnu.tar.gz"
+            },
+            {
+              "size": "21928963",
+              "checksum": "SHA-256:ddf72554ff08758d911d438d6412f36dca0a9b0b3bb1dcc78ab1bf23fff158f2",
+              "host": "x86_64-mingw32",
+              "archiveFileName": "avrocd-tools-1.4.0a1-x86_64-mingw32.tar.gz",
+              "url": "https://github.com/felias-fogg/PyAvrOCD/releases/download/v1.4.0a1/avrocd-tools-1.4.0a1-x86_64-mingw32.tar.gz"
+            },
+            {
+              "size": "29714923",
+              "checksum": "SHA-256:314fbb996de389705722c65bc4790a112e6a23d8a344243dff5286906dbdca0c",
+              "host": "arm64-apple-darwin",
+              "archiveFileName": "avrocd-tools-1.4.0a1-arm64-apple-darwin.tar.gz",
+              "url": "https://github.com/felias-fogg/PyAvrOCD/releases/download/v1.4.0a1/avrocd-tools-1.4.0a1-arm64-apple-darwin.tar.gz"
+            },
+            {
+              "size": "19915633",
+              "checksum": "SHA-256:fbce9f2b45e3cc4956ce9f0a617a0425318433112a44d916f141cb9e41ed32a0",
+              "host": "i686-mingw32",
+              "archiveFileName": "avrocd-tools-1.4.0a1-i686-mingw32.tar.gz",
+              "url": "https://github.com/felias-fogg/PyAvrOCD/releases/download/v1.4.0a1/avrocd-tools-1.4.0a1-i686-mingw32.tar.gz"
             }
           ]
         }
