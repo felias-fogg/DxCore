@@ -549,7 +549,7 @@
             {
               "size": "38084721",
               "checksum": "SHA-256:19a31c11f80d2790d46bb04f0a8de997ea2772c3508a25f171c53cf58cde2d39",
-              "host": "aarch64-pc-linux-gnu",
+              "host": "aarch64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino5-aarch64-pc-linux-gnu.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino5-aarch64-pc-linux-gnu.tar.bz2"
             },
@@ -563,7 +563,7 @@
             {
               "size": "37178887",
               "checksum": "SHA-256:f9e1259d60c7656f0f74fd83eacd964fceee88cd4c72ffb674eee426982f9343",
-              "host": "i686-pc-linux-gnu",
+              "host": "i686-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino5-i686-pc-linux-gnu.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino5-i686-pc-linux-gnu.tar.bz2"
             },
@@ -584,7 +584,7 @@
             {
               "size": "37730911",
               "checksum": "SHA-256:03ff351cf64c1259af2549f330006774ba6b3d2121b7874a37285143eb5937ea",
-              "host": "x86_64-pc-linux-gnu",
+              "host": "x86_64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino5-x86_64-pc-linux-gnu.tar.bz2",
               "url": "https://github.com/SpenceKonde/DxCore/raw/gh-pages/avr-gcc-7.3.0-atmel3.6.1-azduino5-x86_64-pc-linux-gnu.tar.bz2"
             }
@@ -597,7 +597,7 @@
             {
               "size": "38098458",
               "checksum": "SHA-256:75b9740cf47d41177aff14f9674e25ad378e29fae7633920cdcc7b056e8e9fbe",
-              "host": "aarch64-pc-linux-gnu",
+              "host": "aarch64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino6-aarch64-pc-linux-gnu.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino6-aarch64-pc-linux-gnu.tar.bz2"
             },
@@ -611,7 +611,7 @@
             {
               "size": "37148876",
               "checksum": "SHA-256:24fc6bcd0786d3015346342a2fea5701a0ce11eeea178bac1c1d2b6a9e6d6d03",
-              "host": "i686-pc-linux-gnu",
+              "host": "i686-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino6-i686-pc-linux-gnu.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino6-i686-pc-linux-gnu.tar.bz2"
             },
@@ -625,7 +625,7 @@
             {
               "size": "37714803",
               "checksum": "SHA-256:3a4be4dde46b9ee5af1d89fb50512dea0a1c49fca5f2b18357bd5fd12d6c330d",
-              "host": "x86_64-pc-linux-gnu",
+              "host": "x86_64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino6-x86_64-pc-linux-gnu.tar.bz2",
               "url": "https://github.com/SpenceKonde/DxCore/raw/gh-pages/avr-gcc-7.3.0-atmel3.6.1-azduino6-x86_64-pc-linux-gnu.tar.bz2"
             },
@@ -645,7 +645,7 @@
             {
               "size": "38110321",
               "checksum": "SHA-256:856b916885ec085210fbb839a4fc4ce714c7eb3410f8234027ecb89099671a4d",
-              "host": "aarch64-pc-linux-gnu",
+              "host": "aarch64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7-aarch64-pc-linux-gnu.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino7-aarch64-pc-linux-gnu.tar.bz2"
             },
@@ -659,7 +659,7 @@
             {
               "size": "37301408",
               "checksum": "SHA-256:3aa2882a002f012e555edc996c233738d0094e94ca54ca5bc65169787a152ce7",
-              "host": "i686-pc-linux-gnu",
+              "host": "i686-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7-i686-pc-linux-gnu.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino7-i686-pc-linux-gnu.tar.bz2"
             },
@@ -673,7 +673,7 @@
             {
               "size": "37969942",
               "checksum": "SHA-256:e270ca93f4430b0ad675f6d4cebb6214fc2cd3f293066cdc1b46009abb81cdf6",
-              "host": "x86_64-pc-linux-gnu",
+              "host": "x86_64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7-x86_64-pc-linux-gnu.tar.bz2",
               "url": "https://github.com/SpenceKonde/DxCore/raw/gh-pages/avr-gcc-7.3.0-atmel3.6.1-azduino7-x86_64-pc-linux-gnu.tar.bz2"
             },
@@ -693,7 +693,7 @@
             {
               "size": "38113733",
               "checksum": "SHA-256:936e74042f77da04b54723a2f34cf541f02c076d47dba0325f4ccfa3b93650a3",
-              "host": "aarch64-pc-linux-gnu",
+              "host": "aarch64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7b-aarch64-pc-linux.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino7b-aarch64-pc-linux.tar.bz2"
             },
@@ -707,7 +707,7 @@
             {
               "size": "37307286",
               "checksum": "SHA-256:0c448287cd340966f74db9469e8de00ceff49b08d6909568edf64a881a9ac72b",
-              "host": "i686-pc-linux-gnu",
+              "host": "i686-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7b-i686-pc-linux.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino7b-i686-pc-linux.tar.bz2"
             },
@@ -721,7 +721,7 @@
             {
               "size": "37967368",
               "checksum": "SHA-256:0d4cd92e17c639f5881f784af4ea030765c2a93a2debd42a59710b71c9967512",
-              "host": "x86_64-pc-linux-gnu",
+              "host": "x86_64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7b-x86_64-pc-linux-gnu.tar.bz2",
               "url": "https://github.com/SpenceKonde/DxCore/raw/gh-pages/avr-gcc-7.3.0-atmel3.6.1-azduino7b-x86_64-pc-linux-gnu.tar.bz2"
             },
@@ -741,7 +741,7 @@
             {
               "size": "38113733",
               "checksum": "SHA-256:936e74042f77da04b54723a2f34cf541f02c076d47dba0325f4ccfa3b93650a3",
-              "host": "aarch64-pc-linux-gnu",
+              "host": "aarch64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7b-aarch64-pc-linux.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino7b-aarch64-pc-linux.tar.bz2"
             },
@@ -755,7 +755,7 @@
             {
               "size": "37307286",
               "checksum": "SHA-256:0c448287cd340966f74db9469e8de00ceff49b08d6909568edf64a881a9ac72b",
-              "host": "i686-pc-linux-gnu",
+              "host": "i686-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7b-i686-pc-linux.tar.bz2",
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino7b-i686-pc-linux.tar.bz2"
             },
@@ -769,7 +769,7 @@
             {
               "size": "37967368",
               "checksum": "SHA-256:0d4cd92e17c639f5881f784af4ea030765c2a93a2debd42a59710b71c9967512",
-              "host": "x86_64-pc-linux-gnu",
+              "host": "x86_64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino7b-x86_64-pc-linux-gnu.tar.bz2",
               "url": "https://github.com/SpenceKonde/DxCore/raw/gh-pages/avr-gcc-7.3.0-atmel3.6.1-azduino7b-x86_64-pc-linux-gnu.tar.bz2"
             },
@@ -789,7 +789,7 @@
             {
               "size": "44784251",
               "checksum": "SHA-256:52777b35ba0f7c9e23e7ff237ae1bb7f0aaf7652c03390c59e634f8078c3d7f7",
-              "host": "aarch64-pc-linux-gnu",
+              "host": "aarch64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-aarch64-pc-linux-gnu.tar.bz2",
               "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-aarch64-pc-linux-gnu.tar.bz2"
             },
@@ -803,7 +803,7 @@
             {
               "size": "44141029",
               "checksum": "SHA-256:5444bc3c0aeeea945602007d5709790678261f234937e38a9611dfffc1cf1f96",
-              "host": "i686-pc-linux-gnu",
+              "host": "i686-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-i686-pc-linux-gnu.tar.bz2",
               "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-i686-pc-linux-gnu.tar.bz2"
             },
@@ -817,7 +817,7 @@
             {
               "size": "44804707",
               "checksum": "SHA-256:ffce8ce1ef79bd6ec25a1a7154900966bcfdcd1731eb5d1e45c60e914a655e1d",
-              "host": "x86_64-pc-linux-gnu",
+              "host": "x86_64-linux-gnu",
               "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-pc-linux-gnu.tar.bz2",
               "url": "https://github.com/SpenceKonde/DxCore/raw/gh-pages/avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-pc-linux-gnu.tar.bz2"
             },
