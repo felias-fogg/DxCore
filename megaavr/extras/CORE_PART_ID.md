@@ -8,12 +8,14 @@ Do not get them confused with things you test with `#ifdef` or `#if defined()` t
 
 ## Flash size and Series
 The 5 high bits identify the flash size and series
+
 | Flash   |  DA  |  DB  |  DD  |
 |---------|------|------|------|
 |    128k | 0x20 | 0x28 |  --  |
 |     64k | 0x10 | 0x18 | 0x60 |
 |     32k | 0x00 | 0x08 | 0x50 |
 |     16k |  --  |  --  | 0x40 |
+
 Where high bit is 1, it is a not a Dx part.
 The following are defined to help mastching these:
 * `ID_MASK_SERIES`
@@ -34,6 +36,7 @@ The low 3 bits identify pincount:
 | 32       |     0x05 |    `ID_32_PINS` |
 | 48       |     0x06 |    `ID_48_PINS` |
 | 64       |     0x07 |    `ID_64_PINS` |
+
 So AVR64DA48 is 0x16, and AVR128DB64 is 0x2F. Masks and defines to test against this are provided:
 
 Use `ID_MASK_PINS` to match only the pincount bits and compare to the above constants.
