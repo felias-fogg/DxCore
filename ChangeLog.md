@@ -23,6 +23,21 @@ These items are in addition to what was listed under changes already in release.
 
 
 ## Released Changes
+### 1.7.0 (pre-releases of the debug-configured fork felias-fogg/DxCore)
+
+* 1.7.0-pre5:
+  * Based on the current master of SpenceKonde/DxCore, i.e. it includes the unreleased changes listed under 1.6.3 above. Measured on a Curiosity Nano: TCE and TCF PWM work on the EB-series now (in 1.6.2 they did not). **On the 32-pin DU-series, TCA0 PWM has moved from PF0-PF5 to PA0-PA5**: a sketch that uses analogWrite() on PORTF gets no PWM any more.
+  * The core is *debug-configured*: the debug tools (PyAvrOCD, avr-gdb, the SVD files) come from the AvrDebugger package, which has to be installed in addition; the core no longer installs its own copy (avrocd-tools). The GDB server is started with `--arduino-ide`. When AvrDebugger is missing, clicking `Debug` brings up the gdb-server terminal, which says what to install. Releases are now made by a workflow, after several checks.
+  * Fixed: Burn Bootloader on the DA and DB Optiboot boards asked for a bootloader file that does not exist (`{bootloader.class}…hex`).
+  * Fixed: Upload Using Programmer on the DD-series did not write SYSCFG0, and on the DU-series neither Upload Using Programmer nor Burn Bootloader did, so the reset pin and EEPROM settings never reached the chip. The DU-series has the `Save EEPROM` menu now.
+  * Fixed: the BOD mode `Sampled/Sampled` produced a fuse value avrdude cannot parse.
+  * Fixed: SYSCFG0 on the DD-series was one bit short (#638), and the DU-series fuses OSCCFG and SYSCFG1 had unresolved values (#633).
+  * Fixed: uploading with SerialUPDI looked for Python in the core folder; it now uses the python3 tool from the board manager, as the releases of SpenceKonde do.
+  * Fixed builds on Linux and macOS failing when the build path contains a blank.
+  * Removed the AVR32DA64S from the chip menu data: the part does not exist, and it had no menu entry.
+* 1.7.0-pre4: Can be installed stand-alone and uses avrdude 8.1.
+* 1.7.0-pre1 to pre3: The first versions with debugging in the Arduino IDE 2, through PyAvrOCD.
+
 ### 1.6.2 4/12/26
 * Fix #585, issue with SSD not being set correctly in SPI::config(), caused device to sometimes start up in slave mode for no no obvious reason.
 * Fix doc issues

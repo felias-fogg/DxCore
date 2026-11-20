@@ -1,0 +1,71 @@
+# Combinations that DxCore does not build, for compile_all.py --known-failures.
+# compile_all.py pairs the menu options in rotation, and DxCore's menus are not
+# independent of each other, so some pairs ask for something the chip cannot do
+# (millis on a timer the part lacks): those are refused on purpose. The others,
+# marked (bug), are things the IDE offers that do not build with the toolchain
+# DxCore ships (avr-gcc 7.3.0-atmel3.6.1-azduino8), in 1.6.2 and in master alike.
+# They are listed so that only a new failure fails the release.
+
+avrda:attach=manual,chip=avr64da28,clock=10internal,flmap=locksection0,millis=tcb3,printf=full,wiremode=mors  # millis on TCB3, which this part does not have
+avrda:attach=oldversion,chip=avr64da32,clock=8internal,flmap=lockdefault,millis=tcb4,printf=minimal,wiremode=mands  # millis on TCB4, which this part does not have
+avrda:attach=allenabled,chip=avr64da48,clock=5internal,flmap=unlocked,millis=tca0,printf=default,wiremode=mors2  # the clock setup uses a prescaler name azduino8's headers lack (bug)
+avrda:attach=oldversion,chip=avr128da28s,clock=16extclock,flmap=unlocked,millis=tcb1,printf=minimal,wiremode=mands2  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrda:attach=allenabled,chip=avr128da32s,clock=12extclock,flmap=locksection02,millis=tcb3,printf=default,wiremode=mors  # millis on TCB3, which this part does not have
+avrda:attach=manual,chip=avr128da48s,clock=10extclock,flmap=locksection1,millis=tcb4,printf=full,wiremode=mands  # millis on TCB4, which this part does not have
+avrda:attach=oldversion,chip=avr128da64s,clock=8extclock,flmap=locksection0,millis=tca0,printf=minimal,wiremode=mors2  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrda:attach=allenabled,chip=avr64da28s,clock=28internal,flmap=lockdefault,millis=tca1,printf=default,wiremode=mands2  # millis on TCA1, which this part does not have
+avrda:attach=manual,chip=avr64da32s,clock=32internal,flmap=unlocked,millis=tcb2,printf=full,wiremode=mors  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrda:attach=oldversion,chip=avr64da48s,clock=25extclock,flmap=locksection02,millis=disabled,printf=minimal,wiremode=mands  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrda:attach=allenabled,chip=avr64da64s,clock=27extclock,flmap=locksection1,millis=tcb0,printf=default,wiremode=mors2  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrda:attach=manual,chip=avr32da28s,clock=28extclock,flmap=locksection0,millis=tcb1,printf=full,wiremode=mands2  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrda:attach=oldversion,chip=avr32da32s,clock=30extclock,flmap=lockdefault,millis=tcb3,printf=minimal,wiremode=mors  # millis on TCB3, which this part does not have
+avrda:attach=allenabled,chip=avr32da48s,clock=32extclock,flmap=unlocked,millis=tcb4,printf=default,wiremode=mands  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrda:attach=oldversion,chip=avr128da32,clock=40extclock,flmap=locksection1,millis=tca1,printf=minimal,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdaopti:attach=manual,chip=avr64da28,clock=10internal,flmap=locksection0,millis=tcb3,printf=full,wiremode=mors  # millis on TCB3, which this part does not have
+avrdaopti:attach=oldversion,chip=avr64da32,clock=8internal,flmap=lockdefault,millis=tcb4,printf=minimal,wiremode=mands  # millis on TCB4, which this part does not have
+avrdaopti:attach=allenabled,chip=avr64da48,clock=5internal,flmap=unlocked,millis=tca0,printf=default,wiremode=mors2  # the clock setup uses a prescaler name azduino8's headers lack (bug)
+avrdaopti:attach=oldversion,chip=avr128da28s,clock=16extclock,flmap=unlocked,millis=tcb1,printf=minimal,wiremode=mands2  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrdaopti:attach=allenabled,chip=avr128da32s,clock=12extclock,flmap=locksection02,millis=tcb3,printf=default,wiremode=mors  # millis on TCB3, which this part does not have
+avrdaopti:attach=manual,chip=avr128da48s,clock=10extclock,flmap=locksection1,millis=tcb4,printf=full,wiremode=mands  # millis on TCB4, which this part does not have
+avrdaopti:attach=oldversion,chip=avr128da64s,clock=8extclock,flmap=locksection0,millis=tca0,printf=minimal,wiremode=mors2  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrdaopti:attach=allenabled,chip=avr64da28s,clock=28internal,flmap=lockdefault,millis=tca1,printf=default,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdaopti:attach=manual,chip=avr64da32s,clock=32internal,flmap=unlocked,millis=tcb2,printf=full,wiremode=mors  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrdaopti:attach=oldversion,chip=avr64da48s,clock=25extclock,flmap=locksection02,millis=disabled,printf=minimal,wiremode=mands  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrdaopti:attach=allenabled,chip=avr64da64s,clock=27extclock,flmap=locksection1,millis=tcb0,printf=default,wiremode=mors2  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrdaopti:attach=manual,chip=avr32da28s,clock=28extclock,flmap=locksection0,millis=tcb1,printf=full,wiremode=mands2  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrdaopti:attach=oldversion,chip=avr32da32s,clock=30extclock,flmap=lockdefault,millis=tcb3,printf=minimal,wiremode=mors  # millis on TCB3, which this part does not have
+avrdaopti:attach=allenabled,chip=avr32da48s,clock=32extclock,flmap=unlocked,millis=tcb4,printf=default,wiremode=mands  # S variant: avr-gcc azduino8 does not know this part (bug: offered, but cannot be built)
+avrdaopti:attach=oldversion,chip=avr128da32,clock=40extclock,flmap=locksection1,millis=tca1,printf=minimal,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdb:attach=manual,chip=avr64db28,clock=10internal,flmap=locksection0,millis=tcb3,printf=full,wiremode=mors  # millis on TCB3, which this part does not have
+avrdb:attach=oldversion,chip=avr64db32,clock=8internal,flmap=lockdefault,millis=tcb4,printf=minimal,wiremode=mands  # millis on TCB4, which this part does not have
+avrdb:attach=allenabled,chip=avr64db48,clock=5internal,flmap=unlocked,millis=tca0,printf=default,wiremode=mors2  # the clock setup uses a prescaler name azduino8's headers lack (bug)
+avrdb:attach=allenabled,chip=avr128db32,clock=12crystal,flmap=locksection02,millis=tcb3,printf=default,wiremode=mors  # millis on TCB3, which this part does not have
+avrdb:attach=manual,chip=avr128db48,clock=8crystal,flmap=locksection1,millis=tcb4,printf=full,wiremode=mands  # millis on TCB4, which this part does not have
+avrdb:attach=allenabled,chip=avr64db28,clock=20extclock,flmap=lockdefault,millis=tca1,printf=default,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdb:attach=oldversion,chip=avr32db32,clock=28internal,flmap=lockdefault,millis=tcb3,printf=minimal,wiremode=mors  # millis on TCB3, which this part does not have
+avrdb:attach=allenabled,chip=avr32db48,clock=32internal,flmap=unlocked,millis=tcb4,printf=default,wiremode=mands  # millis on TCB4, which this part does not have
+avrdb:attach=oldversion,chip=avr128db32,clock=27crystal,flmap=locksection1,millis=tca1,printf=minimal,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdb:attach=manual,chip=avr32db32,clock=27extclock,flmap=unlocked,millis=tca1,printf=full,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdb:attach=manual,chip=avr64db28,clock=48extclock,flmap=locksection02,millis=tcb4,printf=full,wiremode=mands  # millis on TCB4, which this part does not have
+avrdbopti:attach=manual,chip=avr64db28,clock=10internal,flmap=locksection0,millis=tcb3,printf=full,wiremode=mors  # millis on TCB3, which this part does not have
+avrdbopti:attach=oldversion,chip=avr64db32,clock=8internal,flmap=lockdefault,millis=tcb4,printf=minimal,wiremode=mands  # millis on TCB4, which this part does not have
+avrdbopti:attach=allenabled,chip=avr64db48,clock=5internal,flmap=unlocked,millis=tca0,printf=default,wiremode=mors2  # the clock setup uses a prescaler name azduino8's headers lack (bug)
+avrdbopti:attach=allenabled,chip=avr128db32,clock=12crystal,flmap=locksection02,millis=tcb3,printf=default,wiremode=mors  # millis on TCB3, which this part does not have
+avrdbopti:attach=manual,chip=avr128db48,clock=8crystal,flmap=locksection1,millis=tcb4,printf=full,wiremode=mands  # millis on TCB4, which this part does not have
+avrdbopti:attach=allenabled,chip=avr64db28,clock=20extclock,flmap=lockdefault,millis=tca1,printf=default,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdbopti:attach=oldversion,chip=avr32db32,clock=28internal,flmap=lockdefault,millis=tcb3,printf=minimal,wiremode=mors  # millis on TCB3, which this part does not have
+avrdbopti:attach=allenabled,chip=avr32db48,clock=32internal,flmap=unlocked,millis=tcb4,printf=default,wiremode=mands  # millis on TCB4, which this part does not have
+avrdbopti:attach=oldversion,chip=avr128db32,clock=27crystal,flmap=locksection1,millis=tca1,printf=minimal,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdbopti:attach=manual,chip=avr32db32,clock=27extclock,flmap=unlocked,millis=tca1,printf=full,wiremode=mands2  # millis on TCA1, which this part does not have
+avrdbopti:attach=manual,chip=avr64db28,clock=48extclock,flmap=locksection02,millis=tcb4,printf=full,wiremode=mands  # millis on TCB4, which this part does not have
+avrdd:attach=manual,chip=avr32dd32,clock=10internal,flmap=unlocked,millis=tcb2,printf=full,wiremode=mors  # the clock setup uses a prescaler name azduino8's headers lack (bug)
+avrdd:attach=allenabled,chip=avr32dd20,clock=5internal,flmap=lockdefault,millis=tcbhighest,printf=default,wiremode=mors  # the clock setup uses a prescaler name azduino8's headers lack (bug)
+avrdd:attach=manual,chip=avr16dd20,clock=20crystal,flmap=unlocked,millis=tcb2,printf=full,wiremode=mors  # millis on TCB2, which this part does not have
+avrdd:attach=manual,chip=avr16dd20,clock=25crystal,flmap=unlocked,millis=tcb2,printf=full,wiremode=mors  # millis on TCB2, which this part does not have
+avrdd:attach=manual,chip=avr16dd20,clock=32extclock,flmap=unlocked,millis=tcb2,printf=full,wiremode=mors  # millis on TCB2, which this part does not have
+avrddopti:attach=manual,chip=avr32dd32,clock=10internal,flmap=unlocked,millis=tca0,printf=full,wiremode=mors  # the clock setup uses a prescaler name azduino8's headers lack (bug)
+avrddopti:attach=allenabled,chip=avr32dd20,clock=5internal,flmap=lockdefault,millis=disabled,printf=default,wiremode=mors  # the clock setup uses a prescaler name azduino8's headers lack (bug)
+azduinoboard:attach=allenabled,board=NanoDB_A,clock=24internal,flmap=lockdefault,millis=tcb2,printf=default,wiremode=mors  # the Nano DB variant lacks PIN_WIRE1_SDA (bug)
+azduinoboard:attach=manual,board=NanoDB_A,clock=20crystal,flmap=locksection0,millis=tcb3,printf=full,wiremode=mors  # millis on TCB3, which this part does not have
+azduinoboard:attach=oldversion,board=NanoDB_A,clock=32internal,flmap=locksection1,millis=disabled,printf=minimal,wiremode=mors  # the Nano DB variant lacks PIN_WIRE1_SDA (bug)
+azduinoboard:attach=allenabled,board=NanoDB_A,clock=48crystal,flmap=locksection02,millis=tca0,printf=default,wiremode=mors  # the Nano DB variant lacks PIN_WIRE1_SDA (bug)

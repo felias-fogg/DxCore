@@ -1,0 +1,198 @@
+# Releasing the debug-configured fork: the checks first, then the mechanical part.
+#
+# Push a tag and this does the rest (extras/release.sh checks and pushes it):
+#
+#     ./extras/release.sh 1.7.0-pre5     # a release of the fork, as the earlier ones
+#     ./extras/release.sh 1.7.0-rc1      # a candidate to try out first
+#
+# The fork's versions carry -preN and are ordinary releases: they go into the stable
+# index. Only a tag carrying -rc is a pre-release and goes into an index of its own.
+# Nothing is published unless every compilation has passed.
+#
+# The upstream workflows are left alone: none of them has ever run in this fork.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write          # to create the release and to push to gh-pages
+
+jobs:
+  version:
+    name: The tag matches the core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare the tag with megaavr/platform.txt and ChangeLog.md
+        run: |
+          # platform.txt sets version= twice (a workaround for an IDE bug); the
+          # last one wins, as in the IDE. A candidate is checked against the
+          # version it is a candidate for.
+          TAG="${GITHUB_REF_NAME#v}"
+          case "$TAG" in *-rc*) WANT="${TAG%%-rc*}" ;; *) WANT="$TAG" ;; esac
+          HAVE="$(sed -n 's/^version=//p' megaavr/platform.txt | tail -1)"
+          echo "the tag says ${WANT}, megaavr/platform.txt says ${HAVE}"
+          test "$WANT" = "$HAVE"
+          BASE="${WANT%%-*}"
+          grep -Eq "^#+[[:space:]]*v?${BASE//./\\.}([[:space:]]|$|\()" ChangeLog.md \
+            || { echo "ChangeLog.md has no section for ${BASE}"; exit 1; }
+
+  avrdude:
+    name: avrdude can upload with every programmer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out the branch that carries the index
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Try the avrdude this release will name in the index
+        run: |
+          # The version is the one Boards_manager_release.sh writes into the new
+          # index entry, and the tool comes from the URL the index gives for it:
+          # exactly the avrdude a user gets. No hardware involved; see the script.
+          VERSION="$(sed -n 's/^AVRDUDE_VERSION="\(.*\)"$/\1/p' pages/Boards_manager_release.sh)"
+          echo "avrdude ${VERSION}"
+          test -n "$VERSION"
+          python extras/check_avrdude.py --root megaavr \
+                 --index pages/package_SpenceKonde_DxCore_index.json \
+                 --packager DxCore --version "$VERSION" --host x86_64-linux-gnu
+
+  compile:
+    name: Compile every board, every menu value at least once
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: DxCore
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: arduino/setup-arduino-cli@v2
+
+      - name: Put the core where arduino-cli finds it
+        run: |
+          SKETCHBOOK="$HOME/Arduino"
+          arduino-cli config init --overwrite
+          arduino-cli config set directories.user "$SKETCHBOOK"
+          arduino-cli config set board_manager.additional_urls \
+            https://felias-fogg.github.io/DxCore/package_SpenceKonde_DxCore_index.json
+          arduino-cli core update-index
+          # Only for its tools (avr-gcc, avrdude): the published fork is installed,
+          # and the working tree is compiled under a vendor name of its own, so
+          # that the two do not get in each other's way.
+          arduino-cli core install DxCore:megaavr
+          mkdir -p "$SKETCHBOOK/hardware/dxci"
+          cp -r DxCore/megaavr "$SKETCHBOOK/hardware/dxci/megaavr"
+          arduino-cli core list
+          mkdir -p "$HOME/sketches/Blink"
+          printf '%s\n' \
+            'void setup() { pinMode(LED_BUILTIN, OUTPUT); }' \
+            'void loop() { digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); delay(500); }' \
+            > "$HOME/sketches/Blink/Blink.ino"
+
+      - name: Compile every board, every menu value at least once
+        run: |
+          # compile_all.py works out which menus change the build and compiles
+          # every value of each at least once (--coverage auto); every
+          # combination would be some 3.3 million builds, this is about 270.
+          # The menus are not independent, so some pairs are refused by the
+          # core on purpose; those are listed in compile_all_known_failures.txt
+          # and only a failure not on that list fails the job.
+          python DxCore/extras/compile_all.py --fqbn-prefix dxci:megaavr \
+                 --root DxCore/megaavr --coverage auto \
+                 --known-failures DxCore/extras/compile_all_known_failures.txt \
+                 --work-dir "$HOME/work" --timeout 300
+
+      - name: Optimize for debugging gives -Og
+        run: |
+          arduino-cli compile -v -b dxci:megaavr:avrda:chip=avr128da32 --optimize-for-debug \
+              "$HOME/sketches/Blink" | grep -q -- " -Og " \
+            || { echo "a debug build did not get -Og"; exit 1; }
+          echo "-Og with --optimize-for-debug"
+
+  publish:
+    name: Publish
+    needs: [version, avrdude, compile]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Skipped when the release is already there, so that a re-run works.
+          if gh release view "${GITHUB_REF_NAME}" > /dev/null 2>&1; then
+            echo "the release already exists, leaving it alone"
+            exit 0
+          fi
+          # The notes are the ChangeLog section whose heading begins with the
+          # version (### 1.7.0 (...)), up to the next heading.
+          TAG="${GITHUB_REF_NAME#v}"
+          BASE="${TAG%%-*}"
+          awk -v v="$BASE" '
+            /^#+[[:space:]]/ { if (found) exit; h=$0; sub(/^#+[[:space:]]*v?/, "", h);
+                               if (index(h, v) == 1 && (length(h) == length(v) ||
+                                   substr(h, length(v) + 1, 1) ~ /[ (]/)) { found=1; next } }
+            found { print }' ChangeLog.md > notes.md
+          PRE=""
+          case "${GITHUB_REF_NAME}" in *-rc*) PRE="--prerelease" ;; esac
+          gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" \
+             --notes-file notes.md $PRE
+
+      - name: Check out the branch that carries the index
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+          fetch-depth: 0
+
+      - name: Which index does this tag belong in?
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            *-rc*) INDEX=package_SpenceKonde_DxCore_rc_index.json ;;
+            *)     INDEX=package_SpenceKonde_DxCore_index.json ;;
+          esac
+          echo "INDEX_FILE=$INDEX" >> "$GITHUB_ENV"
+          echo "This tag goes into ${INDEX}"
+
+      - name: Create the candidate index if there is none yet
+        working-directory: pages
+        run: |
+          if [ ! -f "$INDEX_FILE" ]; then
+            cp package_SpenceKonde_DxCore_index.json "$INDEX_FILE"
+            echo "created ${INDEX_FILE} from the released index"
+          fi
+
+      - name: Add this version to the board manager index
+        working-directory: pages
+        run: |
+          sleep 20          # give the release a moment to become visible to the API
+          bash Boards_manager_release.sh "${GITHUB_REF_NAME}"
+
+      - name: Commit and push the index
+        working-directory: pages
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "The index already knew about this version"
+            exit 0
+          fi
+          git commit -m "${GITHUB_REF_NAME}"
+          git push

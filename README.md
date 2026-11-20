@@ -2,7 +2,19 @@
 
 ------
 
-**This is a fork of DxCore supporting debugging in the Arduino IDE 2 (and elsewhere) by means of [PyAvrOCD](https://pyavrocd.io).**
+**This is a fork of DxCore supporting debugging in the Arduino IDE 2 (and elsewhere) by means of [PyAvrOCD](https://pyavrocd.io). If you want to use it, add the following board manager URL and then update the package version:**
+
+```
+https://felias-fogg.github.io/DxCore/package_SpenceKonde_DxCore_index.json
+```
+
+**Since version 1.7.0-pre5, the fork is *debug-configured*: the debug tools (PyAvrOCD, avr-gdb, and the SVD files) come from the AvrDebugger package, which has to be installed in addition. Add the following URL as well, and install AvrDebugger in the `Board Manager`:**
+
+```
+https://felias-fogg.github.io/AvrDebugger/package_felias-fogg_AvrDebugger_index.json
+```
+
+**If you click `Debug` without it, the IDE says so in its gdb-server terminal.**
 
 ------
 
