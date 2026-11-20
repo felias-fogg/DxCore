@@ -8,96 +8,98 @@
 ##                                                      ##
 ##########################################################
 
-# Change these to match your repo
-AUTHOR=SpenceKonde       # Github username
-REPOSITORY=DxCore # Github repo name
-REPOWNER=felias-fogg # Repository owner (not necessarily author)
-PAOOWNER=felias-fogg # Github owner of PyAvrOCD
+# Called by the release workflow of the master branch with the tag,
+# e.g. "bash Boards_manager_release.sh v1.7.0-pre5"; by hand as well.
 
-# Get the version number of most recent (or specified) PyAvrOCD version
-PAOVERSION=$1
-if [ -z "${PAOVERSION}" ]; then
-    PAOVERSION=$(curl -s https://api.github.com/repos/$PAOOWNER/PyAvrOCD/releases/latest | grep "tag_name" |  awk -F\" '{print $4}')
-fi
+AUTHOR=SpenceKonde       # author, part of the index file name
+REPOSITORY=DxCore        # Github repo name
+REPOWNER=felias-fogg     # owner of this fork, where the releases and gh-pages are
 
-echo "PAOVERSION: ${PAOVERSION}"
+# Which index to write. The workflow sets INDEX_FILE: a release candidate goes
+# into an index of its own, so the board manager of an ordinary user never
+# offers it. Without the variable, this is the stable index, the one the README
+# names.
+INDEX="${INDEX_FILE:-package_${AUTHOR}_${REPOSITORY}_index.json}"
 
-AVROCDVERSION=${PAOVERSION#"v"}
-
+# The tools the platform depends on, as in the 1.7.0-pre4 entry. The debug tools
+# are no dependency any more since 1.7.0-pre5: they come from the AvrDebugger
+# package, which the user installs separately and the platform finds as
+# runtime.tools.avr-debugger.path. python3 is what SerialUPDI runs (since
+# 1.7.0-pre5; the earlier entries of this fork lacked it).
 AVRDUDE_VERSION="avrdude_v8.1-released"
+AVR_GCC_VERSION="7.3.0-atmel3.6.1-azduino8"
+PYTHON3_VERSION="3.7.2-post1"
 
-# Get the download URL for the latest release from Github
-DOWNLOAD_URL=$(curl -s https://api.github.com/repos/$REPOWNER/$REPOSITORY/releases/latest | grep "tarball_url" | awk -F\" '{print $4}')
-
-echo "Download URL: ${DOWNLOAD_URL}"
-
-# Get filename
-DOWNLOADED_FILE=$(echo $DOWNLOAD_URL | awk -F/ '{print $8}')
-
-echo "Downloaded file: ${DOWNLOADED_FILE}"
-
-
-# Check whether most recent board file is already in the index
-if grep -q ${REPOSITORY}-${DOWNLOADED_FILE#"v"}\" package_${AUTHOR}_${REPOSITORY}_index.json; then
-    echo "Most recent board version is already in the index file. Nothing to do."
+TAG="$1"
+if [ -z "$TAG" ]; then
+    echo "You need to specify a tag, e.g. v1.7.0-pre5"
     exit 1
 fi
+DOWNLOAD_URL="https://api.github.com/repos/$REPOWNER/$REPOSITORY/tarball/$TAG"
+DOWNLOADED_FILE="$TAG"
+NAME="$REPOSITORY-${TAG#"v"}"
+echo "Packaging ${TAG} into ${INDEX}"
 
-# Check whether current PyAvrOCD is already part of the index
-if grep -q "avrocd-tools-"${AVROCDVERSION} package_${AUTHOR}_${REPOSITORY}_index.json; then
-    echo "Current PyAvrOCD version is in index. Continue ..."
-else
-    echo "Current PyAvrOCD version is not in index. Add it first."
+# Check whether this exact version is already in the index. The archive name has
+# to be matched in full: without the extension, "DxCore-1.7.0-pre5" also matches
+# "DxCore-1.7.0-pre5-rc1.tar.bz2", and the final release would be refused because
+# one of its own release candidates is in the index.
+if grep -q "\"${NAME}.tar.bz2\"" "$INDEX"; then
+    echo "This version is already in the index file. Nothing to do."
     exit 1
 fi
-
 
 # Download file
-wget --no-verbose $DOWNLOAD_URL
-
-# Add .tar.bz2 extension to downloaded file
-mv $DOWNLOADED_FILE ${DOWNLOADED_FILE}.tar.bz2
+wget --no-verbose -O "${DOWNLOADED_FILE}.tar.gz" "$DOWNLOAD_URL" || exit 1
 
 # Extract downloaded file and place it in a folder
-printf "\nExtracting folder ${DOWNLOADED_FILE}.tar.bz2 to $REPOSITORY-${DOWNLOADED_FILE#"v"}\n"
-mkdir -p "$REPOSITORY-${DOWNLOADED_FILE#"v"}" && tar -xzf ${DOWNLOADED_FILE}.tar.bz2 -C "$REPOSITORY-${DOWNLOADED_FILE#"v"}" --strip-components=1
-printf "Done!\n"
+printf "\nExtracting ${DOWNLOADED_FILE}.tar.gz to ${NAME}\n"
+mkdir -p "$NAME" && tar -xzf "${DOWNLOADED_FILE}.tar.gz" -C "$NAME" --strip-components=1 || exit 1
 
-# Move files out of the megaavr folder
-mv $REPOSITORY-${DOWNLOADED_FILE#"v"}/megaavr/* $REPOSITORY-${DOWNLOADED_FILE#"v"}
+# The platform is the megaavr folder of the repository: keep only that
+mv "$NAME" "$NAME.full" && mv "$NAME.full/megaavr" "$NAME" && rm -rf "$NAME.full" "${DOWNLOADED_FILE}.tar.gz"
+test -f "$NAME/platform.txt" || { echo "no platform.txt in the megaavr folder of ${TAG}"; exit 1; }
 
-# Delete downloaded file and empty megaavr folder
-rm -rf ${DOWNLOADED_FILE}.tar.bz2 $REPOSITORY-${DOWNLOADED_FILE#"v"}/megaavr
+# Make sure there are no macOS related files added to the archive that's soon to be
+# generated. dot_clean only exists on macOS; elsewhere there is nothing to clean.
+if command -v dot_clean > /dev/null 2>&1; then
+    dot_clean "$NAME"
+fi
+find "$NAME" -name "._*" -delete 2>/dev/null
 
 # Compress folder to tar.bz2
-printf "\nCompressing folder $REPOSITORY-${DOWNLOADED_FILE#"v"} to $REPOSITORY-${DOWNLOADED_FILE#"v"}.tar.bz2\n"
-tar -cjSf $REPOSITORY-${DOWNLOADED_FILE#"v"}.tar.bz2 $REPOSITORY-${DOWNLOADED_FILE#"v"}
+printf "\nCompressing folder ${NAME} to ${NAME}.tar.bz2\n"
+tar -cjSf "${NAME}.tar.bz2" "$NAME"
 printf "Done!\n"
 
 # Get file size on bytes
-FILE_SIZE=$(wc -c "$REPOSITORY-${DOWNLOADED_FILE#"v"}.tar.bz2" | awk '{print $1}')
+FILE_SIZE=$(wc -c "${NAME}.tar.bz2" | awk '{print $1}')
 
-# Get SHA256 hash
-SHA256="SHA-256:$(shasum -a 256 "$REPOSITORY-${DOWNLOADED_FILE#"v"}.tar.bz2" | awk '{print $1}')"
+# Get SHA256 hash: shasum is a macOS thing, sha256sum a Linux one
+if command -v shasum > /dev/null 2>&1; then
+    SHA256="SHA-256:$(shasum -a 256 "${NAME}.tar.bz2" | awk '{print $1}')"
+else
+    SHA256="SHA-256:$(sha256sum "${NAME}.tar.bz2" | awk '{print $1}')"
+fi
 
-# Create Github download URL
-URL="https://${REPOWNER}.github.io/${REPOSITORY}/$REPOSITORY-${DOWNLOADED_FILE#"v"}.tar.bz2"
+# The archive is served from this branch (gh-pages)
+URL="https://${REPOWNER}.github.io/${REPOSITORY}/${NAME}.tar.bz2"
 
-cp "package_${AUTHOR}_${REPOSITORY}_index.json" "package_${AUTHOR}_${REPOSITORY}_index.json.tmp"
+cp "$INDEX" "$INDEX.tmp"
 
 # Add new boards release entry
-jq -r                                   \
---arg repository $REPOSITORY            \
---arg version    ${DOWNLOADED_FILE#"v"} \
---arg url        $URL                   \
---arg checksum   $SHA256                \
---arg file_size  $FILE_SIZE             \
---arg avrdude_ver $AVRDUDE_VERSION      \
---arg avrocdversion $AVROCDVERSION      \
---arg file_name  $REPOSITORY-${DOWNLOADED_FILE#"v"}.tar.bz2  \
+jq -r                                          \
+--arg version          "${TAG#"v"}"            \
+--arg url              "$URL"                  \
+--arg checksum         "$SHA256"               \
+--arg file_size        "$FILE_SIZE"            \
+--arg avrdude_ver      "$AVRDUDE_VERSION"      \
+--arg avr_gcc_ver      "$AVR_GCC_VERSION"      \
+--arg python3_ver      "$PYTHON3_VERSION"      \
+--arg file_name        "${NAME}.tar.bz2"       \
 '.packages[].platforms[.packages[].platforms | length] |= . +
 {
-  "name": "DxCore (Debug enabled)",
+  "name": "DxCore (debug-configured)",
   "architecture": "megaavr",
   "version": $version,
   "category": "Contributed",
@@ -112,6 +114,8 @@ jq -r                                   \
             {
               "name": "<b>Supported:</b> AVR128DA28/32/48/64, AVR128DB28/32/48/64, AVR64DA28/32/48/64, AVR64DB28/32/48/64, AVR64DD14/20/28/32, AVR64DU28/32<br/>AVR32DA28/32/48, AVR32DB28/32/48,  AVR32DD14/20/28/32, AVR16DD14/20/28/32<br/>AVR64EA28/32/48, AVR32EA28/32/48, AVR16EA28/32/48"
             },
+            { "name": "1.7.0-pre1 to pre3 were the first experimental versions to include the debug capability. 1.7.0-pre4 can be installed stand-alone and uses avrdude 8.1. Since 1.7.0-pre5, the core is based on the current master of SpenceKonde/DxCore, and the debug tools come from the AvrDebugger package, which has to be installed in addition."
+            },
             {
               "name": "<b>Release Notes:</b> 1.6.2 - Add avrdude 8.1 for non-serialupdi uploads, many critical fixes. Should be a lot closer.  1.6.1 - 1.6.0 omitted the new toolchain, and none of the new parts worked as a result. This should correct that. 1.6.0 - Experimental release so that automated testing can be run with new toolchain. Further information will be posted on github when more information about release plans is available. "
             },
@@ -124,12 +128,12 @@ jq -r                                   \
     {
       "packager": "DxCore",
       "name": "avr-gcc",
-      "version": "7.3.0-atmel3.6.1-azduino8"
+      "version": $avr_gcc_ver
     },
     {
       "packager": "DxCore",
       "name": "avrdude",
-      "version":  $avrdude_ver
+      "version": $avrdude_ver
     },
     {
       "packager": "arduino",
@@ -138,11 +142,11 @@ jq -r                                   \
     },
     {
       "packager": "DxCore",
-      "name": "avrocd-tools",
-      "version": $avrocdversion
-    }   
+      "name": "python3",
+      "version": $python3_ver
+    }
   ]
-}' "package_${AUTHOR}_${REPOSITORY}_index.json.tmp" > "package_${AUTHOR}_${REPOSITORY}_index.json"
+}' "$INDEX.tmp" > "$INDEX" || { mv "$INDEX.tmp" "$INDEX"; echo "jq failed, index unchanged"; exit 1; }
 
-# Remove files that's no longer needed
-rm -rf "$REPOSITORY-${DOWNLOADED_FILE#"v"}" "package_${AUTHOR}_${REPOSITORY}_index.json.tmp"
+# Remove files that are no longer needed (the archive stays: it is what the URL serves)
+rm -rf "$NAME" "$INDEX.tmp"
